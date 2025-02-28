@@ -19,7 +19,7 @@ function App() {
         </a>
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <button className="px-6 py-3 text-white bg-terciario rounded-lg hover:bg-blue-600">
-        ¡Hola, Tailwind xdxdxd!
+        ¡Hola, Tailwind!
       </button>
     </div>
       </header>
