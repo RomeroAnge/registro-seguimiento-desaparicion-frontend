@@ -1,30 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+
+// Layouts
+import FamiliarLayout from "./layouts/FamiliarLayout"
+import ComunidadLayout from "./layouts/ComunidadLayout"
+import AutoridadLayout from "./layouts/AutoridadLayout"
+
+// Páginas para Familiar
+import FamiliarHome from "./pages/familiar/Home"
+
+// Páginas para Comunidad
+import ComunidadHome from "./pages/comunidad/Home"
+
+// Páginas para Autoridad
+import AutoridadHome from "./pages/autoridad/Home"
+
+// Página de selección de rol
+import RoleSelection from "./pages/RoleSelection"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <button className="px-6 py-3 text-white bg-terciario rounded-lg hover:bg-blue-600">
-        ¡Hola, Tailwind!
-      </button>
-    </div>
-      </header>
-    </div>
-  );
+    <Router>
+      <Routes>
+        {/* Página de selección de rol */}
+        <Route path="/" element={<RoleSelection />} />
+
+        {/* Rutas para Familiar */}
+        <Route path="/familiar" element={<FamiliarLayout />}>
+          <Route index element={<FamiliarHome />} />
+          {/* Aquí puedes agregar más rutas para el familiar */}
+          <Route path="*" element={<Navigate to="/familiar" replace />} />
+        </Route>
+
+        {/* Rutas para Comunidad */}
+        <Route path="/comunidad" element={<ComunidadLayout />}>
+          <Route index element={<ComunidadHome />} />
+          {/* Aquí puedes agregar más rutas para la comunidad */}
+          <Route path="*" element={<Navigate to="/comunidad" replace />} />
+        </Route>
+
+        {/* Rutas para Autoridad */}
+        <Route path="/autoridad" element={<AutoridadLayout />}>
+          <Route index element={<AutoridadHome />} />
+          {/* Aquí puedes agregar más rutas para la autoridad */}
+          <Route path="*" element={<Navigate to="/autoridad" replace />} />
+        </Route>
+
+        {/* Ruta de fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
+  )
 }
 
-export default App;
+export default App
+
