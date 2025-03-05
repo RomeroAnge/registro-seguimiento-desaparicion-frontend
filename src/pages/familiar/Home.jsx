@@ -1,13 +1,15 @@
 import { AlertTriangle, Clock, CheckCircle } from "lucide-react"
-
+import { Link } from "react-router-dom"
 export default function FamiliarHome() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-purple-900">Bienvenido/a</h1>
+        <Link to="/familiar/reportar">
         <button className="rounded-lg bg-purple-600 px-4 py-2 text-white hover:bg-purple-700 transition-colors">
           + Nuevo Reporte
         </button>
+        </Link>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">

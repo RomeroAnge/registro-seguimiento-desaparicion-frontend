@@ -16,6 +16,8 @@ import AutoridadHome from "./pages/autoridad/Home"
 
 // Página de selección de rol
 import RoleSelection from "./pages/RoleSelection"
+import ReportarDesaparecido from "./pages/familiar/ReportarDesaparición"
+import PersonForm from "./pages/autoridad/FormPerson"
 
 function App() {
   return (
@@ -27,7 +29,10 @@ function App() {
         {/* Rutas para Familiar */}
         <Route path="/familiar" element={<FamiliarLayout />}>
           <Route index element={<FamiliarHome />} />
-          {/* Aquí puedes agregar más rutas para el familiar */}
+
+          <Route path="reportar" element={<ReportarDesaparecido />}>
+          </Route>
+
           <Route path="*" element={<Navigate to="/familiar" replace />} />
         </Route>
 
@@ -42,6 +47,8 @@ function App() {
         <Route path="/autoridad" element={<AutoridadLayout />}>
           <Route index element={<AutoridadHome />} />
           {/* Aquí puedes agregar más rutas para la autoridad */}
+          <Route path="edit/:id" element={<PersonForm />}>
+          </Route>
           <Route path="*" element={<Navigate to="/autoridad" replace />} />
         </Route>
 
