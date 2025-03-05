@@ -1,6 +1,7 @@
 import { Menu, Search, User, HelpCircle } from "lucide-react"
 import { Button } from "../ui/button"
 import { useSidebar } from "../ui/sidebar"
+import { Link} from "react-router-dom"
 
 export function HeaderFamiliar() {
   const { toggleSidebar } = useSidebar()
@@ -42,6 +43,7 @@ export function HeaderFamiliar() {
           <span className="sr-only">Ayuda</span>
         </Button>
 
+        <Link to="/familiar/reportar"> 
         <Button
           variant="ghost"
           className="group relative overflow-hidden rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm hover:bg-white/20"
@@ -49,7 +51,7 @@ export function HeaderFamiliar() {
           <span className="relative z-10">Reportar Desaparición</span>
           <span className="absolute inset-0 -z-0 bg-gradient-to-r from-red-600 to-red-400 opacity-0 transition-opacity group-hover:opacity-100"></span>
         </Button>
-
+        </Link>
         <Button
           variant="ghost"
           size="icon"

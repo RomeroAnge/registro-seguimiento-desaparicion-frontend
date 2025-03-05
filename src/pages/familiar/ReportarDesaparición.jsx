@@ -14,10 +14,11 @@ const FormularioR = () => {
   
   const [reporte, setReporte] = useState({
     codigo_reporte: "",
-    datos_personales: "",
+    nombre: "",
+    descripcion: "",
     fotografias: "",
     estado_reporte: "Pendiente",
-    codigo_usuario: "FAM6ASXE",
+    codigo_usuario: "FAM-123",
     codigo_ubicacion: "", 
   });
 
@@ -97,15 +98,32 @@ const FormularioR = () => {
 
                 <div className="mb-5">
                   <label className="block mb-2 text-black font-medium">
-                    Ingresa los datos personales
+                    Ingresa el Nombre
                   </label>
                   <textarea
-                    value={reporte.datos_personales}
+                    value={reporte.nombre}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-3 w-full h-40 resize-none"
                     onChange={(e) =>
                       setReporte({
                         ...reporte,
-                        datos_personales: e.target.value,
+                        nombre: e.target.value,
+                      })
+                    }
+                    required
+                  ></textarea>
+                </div>
+
+                <div className="mb-5">
+                  <label className="block mb-2 text-black font-medium">
+                    Ingresa la descripcion
+                  </label>
+                  <textarea
+                    value={reporte.descripcion}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-3 w-full h-40 resize-none"
+                    onChange={(e) =>
+                      setReporte({
+                        ...reporte,
+                        descripcion: e.target.value,
                       })
                     }
                     required

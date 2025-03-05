@@ -45,8 +45,8 @@ const AutoridadHome = () => {
               <tbody className="divide-y text-sm">
                 {Array.isArray(people) && people.length > 0 ? (
                   people.map((person) => {
-                    const personalData = person.datos_personales.split(','); // Separar datos
-                    const name = personalData[0].split(':')[1]?.trim(); // Extraer nombre
+                    const personalData = person.nombre; // Separar datos
+                    const name = personalData; // Extraer nombre
                     const photo = person.fotografias?.foto1 || 'https://via.placeholder.com/50'; // Foto por defecto si no hay foto
                     const publicationDate = new Date(person.created_at).toLocaleDateString(); // Convertir la fecha
 

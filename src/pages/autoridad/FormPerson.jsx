@@ -30,16 +30,12 @@ const PersonForm = () => {
                     if (response.data && response.data.data) {
                         const caseData = response.data.data;
 
-                        const datosPersonales = caseData.datos_personales.split(',');
-                        const nombre = datosPersonales[0]?.split(':')[1]?.trim() || '';
-                        const descripcion = datosPersonales.slice(2).join(',').replace(/\\u([0-9A-Fa-f]{4})/g, function(match, p1) {
-                            return String.fromCharCode(parseInt(p1, 16));
-                        }).trim() || '';
+                        
 
                         setFormData({
                             codigo_reporte: caseData.codigo_reporte,
-                            nombre: nombre,
-                            descripcion: descripcion,
+                            nombre: caseData.nombre,
+                            descripcion: caseData.descripcion,
                             fecha: caseData.created_at.split('T')[0],
                             estado: caseData.estado_reporte,
                             codigo_usuario: caseData.codigo_usuario,
