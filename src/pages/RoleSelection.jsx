@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { Users, Shield, Heart } from "lucide-react"
+import Boton from "../components/inteligencia/Boton"
 
 export default function RoleSelection() {
   return (
@@ -55,6 +56,9 @@ export default function RoleSelection() {
 
         <div className="mt-12 text-center text-gray-600">
           <p>© {new Date().getFullYear()} Encuentralos. Todos los derechos reservados.</p>
+        </div>
+        <div className="justify-end flex mt-4">
+          <Boton/>
         </div>
       </div>
     </div>
