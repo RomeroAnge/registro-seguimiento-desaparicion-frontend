@@ -25,6 +25,7 @@ function App() {
       <Routes>
         {/* Página de selección de rol */}
         <Route path="/" element={<RoleSelection />} />
+        
 
         {/* Rutas para Familiar */}
         <Route path="/familiar" element={<FamiliarLayout />}>
