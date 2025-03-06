@@ -47,7 +47,7 @@ const AutoridadHome = () => {
                   people.map((person) => {
                     const personalData = person.nombre; // Separar datos
                     const name = personalData; // Extraer nombre
-                    const photo = person.fotografias?.foto1 || 'https://via.placeholder.com/50'; // Foto por defecto si no hay foto
+                    const photo = `http://127.0.0.1:8000/storage/foto/${person.codigo_reporte}.png`|| 'https://via.placeholder.com/50'; // Foto por defecto si no hay foto
                     const publicationDate = new Date(person.created_at).toLocaleDateString(); // Convertir la fecha
 
                     return (

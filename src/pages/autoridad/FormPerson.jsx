@@ -17,7 +17,7 @@ const PersonForm = () => {
         codigo_responsable:"",
     });
 
-    const [photos, setPhotos] = useState({}); 
+    const [photoUrl, setPhotoUrl] = useState(""); 
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null); 
     const [showModal, setShowModal] = useState(false); // Para controlar el modal
@@ -30,8 +30,6 @@ const PersonForm = () => {
                     if (response.data && response.data.data) {
                         const caseData = response.data.data;
 
-                        
-
                         setFormData({
                             codigo_reporte: caseData.codigo_reporte,
                             nombre: caseData.nombre,
@@ -43,7 +41,17 @@ const PersonForm = () => {
                             codigo_ubicacion: caseData.codigo_ubicacion,
                         });
 
-                        setPhotos(caseData.fotografias);
+                        // Formatear la URL de la imagen
+                        if (caseData.fotografias) {
+                            // Si la ruta ya es una URL completa
+                            if (caseData.fotografias.startsWith('http')) {
+                                setPhotoUrl(caseData.fotografias);
+                            } else {
+                                // Si es una ruta relativa, construir la URL completa
+                                // Asumiendo que las imágenes se almacenan en storage/app/public/foto
+                                setPhotoUrl(`http://127.0.0.1:8000/storage/foto/${caseData.codigo_reporte}.png`);
+                            }
+                        }
                     } else {
                         setError('Datos no encontrados');
                     }
@@ -127,114 +135,138 @@ const PersonForm = () => {
                     {id ? 'Ver Reporte de Desaparecido' : 'Agregar Caso Desaparecido'}
                 </h1>
                 {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+                
+                {/* Sección de fotografía */}
+                <div className="mb-6">
+                    <h2 className="text-lg font-medium text-gray-700 mb-3">Fotografía</h2>
+                    <div className="flex justify-center">
+                        {photoUrl ? (
+                            <div className="relative border border-gray-300 rounded-lg overflow-hidden">
+                                <img 
+                                    src={photoUrl || "/placeholder.svg"} 
+                                    alt="Fotografía de la persona desaparecida" 
+                                    className="max-h-64 object-contain"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = 'https://via.placeholder.com/400x300?text=Imagen+no+disponible';
+                                    }}
+                                />
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center h-64 w-full bg-gray-100 border border-gray-300 rounded-lg">
+                                <p className="text-gray-500">No hay fotografía disponible</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                
                 <form>
-    <div className="space-y-6">
-        <div>
-            <label htmlFor="codigo_reporte" className="block text-sm font-medium text-gray-600">Código del Caso</label>
-            <input 
-                type="text" 
-                name="codigo_reporte" 
-                id="codigo_reporte" 
-                value={formData.codigo_reporte} 
-                readOnly
-                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            />
-        </div>
-        <div>
-            <label htmlFor="nombre" className="block text-sm font-medium text-gray-600">Nombre</label>
-            <input 
-                type="text" 
-                name="nombre" 
-                id="nombre" 
-                value={formData.nombre} 
-                readOnly
-                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            />
-        </div>
-        <div>
-            <label htmlFor="descripcion" className="block text-sm font-medium text-gray-600">Descripción</label>
-            <textarea 
-                name="descripcion" 
-                id="descripcion" 
-                value={formData.descripcion} 
-                readOnly
-                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            ></textarea>
-        </div>
-        <div>
-            <label htmlFor="fecha" className="block text-sm font-medium text-gray-600">Fecha</label>
-            <input 
-                type="date" 
-                name="fecha" 
-                id="fecha" 
-                value={formData.fecha} 
-                readOnly
-                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            />
-        </div>
-        <div>
-            <label htmlFor="estado" className="block text-sm font-medium text-gray-600">Estado</label>
-            <input 
-                name="estado" 
-                id="estado"
-                value={formData.estado}  
-                readOnly
-                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            />
-        </div>
-        <div>
-            <label htmlFor="identificador_unico" className="block text-sm font-medium text-gray-600">Código Responsable de Caso</label>
-            <input 
-                type="text" 
-                name="identificador_unico" 
-                id="identificador_unico" 
-                value={formData.codigo_usuario} 
-                readOnly
-                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            />
-        </div>
-        <div>
-            <label htmlFor="reporte_desaparicion_id" className="block text-sm font-medium text-gray-600">ID del Reporte de Desaparición</label>
-            <input 
-                type="number" 
-                name="reporte_desaparicion_id" 
-                id="reporte_desaparicion_id" 
-                value={formData.reporte_desaparicion_id} 
-                readOnly
-                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            />
-        </div>
-        <div>
-            <label htmlFor="codigo_responsable" className="block text-sm font-medium text-gray-600">Código de Ubicación</label>
-            <input 
-                type="text" 
-                name="codigo_responsable" 
-                id="codigo_responsable" 
-                value={formData.codigo_ubicacion} 
-                readOnly
-                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-            />
-        </div>
-    </div>
+                    <div className="space-y-6">
+                        <div>
+                            <label htmlFor="codigo_reporte" className="block text-sm font-medium text-gray-600">Código del Caso</label>
+                            <input 
+                                type="text" 
+                                name="codigo_reporte" 
+                                id="codigo_reporte" 
+                                value={formData.codigo_reporte} 
+                                readOnly
+                                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="nombre" className="block text-sm font-medium text-gray-600">Nombre</label>
+                            <input 
+                                type="text" 
+                                name="nombre" 
+                                id="nombre" 
+                                value={formData.nombre} 
+                                readOnly
+                                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="descripcion" className="block text-sm font-medium text-gray-600">Descripción</label>
+                            <textarea 
+                                name="descripcion" 
+                                id="descripcion" 
+                                value={formData.descripcion} 
+                                readOnly
+                                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                            ></textarea>
+                        </div>
+                        <div>
+                            <label htmlFor="fecha" className="block text-sm font-medium text-gray-600">Fecha</label>
+                            <input 
+                                type="date" 
+                                name="fecha" 
+                                id="fecha" 
+                                value={formData.fecha} 
+                                readOnly
+                                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="estado" className="block text-sm font-medium text-gray-600">Estado</label>
+                            <input 
+                                name="estado" 
+                                id="estado"
+                                value={formData.estado}  
+                                readOnly
+                                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="identificador_unico" className="block text-sm font-medium text-gray-600">Código Responsable de Caso</label>
+                            <input 
+                                type="text" 
+                                name="identificador_unico" 
+                                id="identificador_unico" 
+                                value={formData.codigo_usuario} 
+                                readOnly
+                                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="reporte_desaparicion_id" className="block text-sm font-medium text-gray-600">ID del Reporte de Desaparición</label>
+                            <input 
+                                type="number" 
+                                name="reporte_desaparicion_id" 
+                                id="reporte_desaparicion_id" 
+                                value={formData.reporte_desaparicion_id} 
+                                readOnly
+                                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="codigo_responsable" className="block text-sm font-medium text-gray-600">Código de Ubicación</label>
+                            <input 
+                                type="text" 
+                                name="codigo_responsable" 
+                                id="codigo_responsable" 
+                                value={formData.codigo_ubicacion} 
+                                readOnly
+                                className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                            />
+                        </div>
+                    </div>
 
-    <div className="flex justify-between mt-8">
-        <button 
-            type="button"
-            onClick={confirmAction}
-            className="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none"
-        >
-            Rechazar
-        </button>
-        <button 
-            type="button"
-            onClick={handleSubmit}
-            className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none"
-        >
-            Aceptar
-        </button>
-    </div>
-</form>
-
+                    <div className="flex justify-between mt-8">
+                        <button 
+                            type="button"
+                            onClick={confirmAction}
+                            className="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none"
+                        >
+                            Rechazar
+                        </button>
+                        <button 
+                            type="button"
+                            onClick={handleSubmit}
+                            className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none"
+                        >
+                            Aceptar
+                        </button>
+                    </div>
+                </form>
             </div>
 
             {/* Modal */}
